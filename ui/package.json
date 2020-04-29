@@ -1,8 +1,7 @@
 {
   "scripts": {
-    "start": "webpack-dev-server --watch",
     "hc:start": "cd ../dna && hc run --agent-name alice --networked sim2h",
-    "demo": "concurrently \"sim2h_server\" \"npm run hc:alice\" \"npm run hc:bob\" \"npm run ui:alice\" \"npm run ui:bob\" "
+    "start": "concurrently \"sim2h_server\" \"npm run hc:alice\" \"webpack-dev-server --watch --open\" "
   },
   "devDependencies": {
     "@open-wc/building-webpack": "^2.1.0",
