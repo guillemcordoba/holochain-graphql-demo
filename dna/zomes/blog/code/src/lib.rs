@@ -2,6 +2,7 @@
 
 use hdk::prelude::*;
 use hdk_proc_macros::zome;
+use hdk::api::AGENT_ADDRESS;
 use holochain_anchors::anchor;
 
 // see https://developer.holochain.org/api/0.0.47-alpha1/hdk/ for info on using the hdk library
@@ -57,6 +58,16 @@ mod courses {
                     validation: | _validation_data: hdk::LinkValidationData | {
                         Ok(())
                     }
+                ),
+                from!(
+                    "%agent_id",
+                    link_type: "author->posts",
+                    validation_package: || {
+                        hdk::ValidationPackageDefinition::Entry
+                    },
+                    validation: | _validation_data: hdk::LinkValidationData | {
+                        Ok(())
+                    }
                 )
             ]
         )
@@ -73,7 +84,13 @@ mod courses {
         let new_post_address = hdk::commit_entry(&new_post_entry)?;
         let anchor_address = anchor("post_anchor".into(), "posts".into())?;
         hdk::link_entries(&anchor_address, &new_post_address, "anchor->posts", "")?;
+        hdk::link_entries(&AGENT_ADDRESS, &new_post_address, "author->posts", "")?;
         Ok(new_post_address)
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_post(post_address: Address) -> ZomeApiResult<Post> {
+        hdk::utils::get_as_type(post_address)
     }
 
     #[zome_fn("hc_public")]
@@ -85,5 +102,21 @@ mod courses {
         )?.addresses().into_iter().map(|post_address| {
             hdk::utils::get_as_type(post_address)
         }).collect()
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_author_posts(agent_id: Address) -> ZomeApiResult<Vec<Post>> {
+        hdk::get_links(
+            &agent_id, 
+            LinkMatch::Exactly("author->posts"),
+            LinkMatch::Any
+        )?.addresses().into_iter().map(|post_address| {
+            hdk::utils::get_as_type(post_address)
+        }).collect()
+    }
+
+    #[zome_fn("hc_public")]
+    fn get_agent_id() -> ZomeApiResult<Address> {
+        Ok(hdk::AGENT_ADDRESS.clone())
     }
 }

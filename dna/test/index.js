@@ -18,10 +18,10 @@ const orchestrator = new Orchestrator({
   )
 })
 
-const dna = Config.dna(dnaPath, 'course_dna')
+const dna = Config.dna(dnaPath, 'blog_dna')
 const conductorConfig = Config.gen(
   {
-    course_dna: dna
+    blog_dna: dna
   },
   {
     network: {
@@ -36,17 +36,20 @@ orchestrator.registerScenario("create_post and get_all_posts", async (s, t) => {
 
   // Make a call to a Zome function
   // indicating the function, and passing it an input
-  const create_post_1 = await alice.call("course_dna", "courses", "create_post", {"content" : "test"})
-  const create_post_2 = await alice.call("course_dna", "courses", "create_post", {"content" : "test2"})
-  const create_post_3 = await bob.call("course_dna", "courses", "create_post", {"content" : "test3"})
+  const create_post_1 = await alice.call("blog_dna", "blog", "create_post", {"content" : "test"})
+  const create_post_2 = await alice.call("blog_dna", "blog", "create_post", {"content" : "test2"})
+  const create_post_3 = await bob.call("blog_dna", "blog", "create_post", {"content" : "test3"})
 
   // Wait for all network activity to settle
   await s.consistency()
 
-  const get_all_posts_results = await alice.call("course_dna", "courses", "get_all_posts", {})
+  const get_all_posts_results = await alice.call("blog_dna", "blog", "get_all_posts", {})
+  const get_agent_id_result = await alice.call("blog_dna", "blog", "get_agent_id", {})
+  const get_author_posts_results = await bob.call("blog_dna", "blog", "get_author_posts", {"agent_id": get_agent_id_result.Ok})
 
   // check for equality of the actual and expected results
   t.deepEqual(get_all_posts_results.Ok.length, 3)
+  t.deepEqual(get_author_posts_results.Ok.length, 2)
 })
 
 orchestrator.run()
