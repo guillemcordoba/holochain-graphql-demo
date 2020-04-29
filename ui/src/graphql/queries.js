@@ -4,6 +4,13 @@ export const GET_ALL_POSTS = gql`
   query GetAllPosts {
     allPosts {
       id
+    }
+  }
+`
+export const GET_POST_DETAIL = gql` 
+  query GetPostDetail(postId: ID!) {
+    post(id: "${postId}") {
+      id
       content
       timestamp
       author {
@@ -13,7 +20,7 @@ export const GET_ALL_POSTS = gql`
   }
 `
 
-export const CREATE_POSTS = gql`
+export const CREATE_POST = gql`
   mutation CreatePost($content: String!) {
     createPost(content: $content) {
       id

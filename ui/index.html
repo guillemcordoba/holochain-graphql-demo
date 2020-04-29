@@ -23,21 +23,36 @@
       --mdc-theme-primary: #673ab7;
       --mdc-theme-secondary: #4CAF50;
     }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+    }
   </style>
   <title>leap-courses</title>
 </head>
 
 <body>
 
-  <div>
-    <h3>Create post</h3>
-    <mwc-textarea id="post-content"></mwc-textarea>
+  <div class="column">
 
-    <mwc-button icon="add" label="CREATE POST" id="create-post"></mwc-button>
+    <div class="column">
+      <h3>Create post</h3>
+      <mwc-textarea id="post-content"></mwc-textarea>
+
+      <mwc-button icon="add" label="CREATE POST" id="create-post"></mwc-button>
+    </div>
+
+    <div class="row">
+      <div id="post-list" class="column"></div>
+      <div id="post-detail" class="column"></div>
+    </div>
   </div>
-
-  <div id="post-list"></div>
-
 
   <script type="module" src="./src/index.js"></script>
 </body>

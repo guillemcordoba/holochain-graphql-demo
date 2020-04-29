@@ -1,22 +1,24 @@
 import { INSTANCE_NAME, ZOME_NAME } from '../config';
-import { parseResponse } from '../utils';
 
 /**
  * Gets the post with the given id and returns it in an apollo client friendly shape 
  */
 async function getPost(callZome, postId) {
-  const post = await callZome(INSTANC_NAME, ZOME_NAME, 'get_post')({
+  const post = await callZome(INSTANCE_NAME, ZOME_NAME, 'get_post')({
     post_address: postId
   });
   // Really important: prepare the object shape that ApolloClient expects
   return {
-    id: address,
+    id: postId,
     ...post
   };
 }
 
 export const resolvers = {
   Author: {
+    id(parent) {
+      return parent;
+    },
     async posts(parent, args, { callZome }) {
       // Get the list of post addresses 
       const postAddresses = await callZome(
@@ -31,14 +33,10 @@ export const resolvers = {
     }
   },
   Post: {
-    id(parent) {
-      return parent;
-    },
     author(parent) {
       return parent.author_address;
     }
   },
-
   Query: {
     async allPosts(parent, args, context) {
       // Get the callZome function from the context
@@ -60,7 +58,7 @@ export const resolvers = {
   },
   Mutation: {
     async createPost(_, { content }, { callZome }) {
-      const result = await callZome(
+      const postId = await callZome(
         INSTANCE_NAME,
         ZOME_NAME,
         'create_post'
@@ -69,7 +67,6 @@ export const resolvers = {
         content
       });
 
-      const postId = parseResponse(result);
       return getPost(callZome, postId)
     },
   }
