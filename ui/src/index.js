@@ -1,38 +1,40 @@
 import '@material/mwc-button';
 import '@material/mwc-textarea';
+import '@material/mwc-list';
+import '@material/mwc-list/mwc-list-item';
 import '@authentic/mwc-card';
 
 import { getClient } from './graphql';
 import { GET_ALL_POSTS, GET_POST_DETAIL, CREATE_POST } from './graphql/queries';
 
 async function initApp() {
-    setupPostList();
-    setupCreatePost();
+    const client = await getClient();
+
+    setupPostList(client);
+    setupCreatePost(client);
+    setPostDetail(client, undefined);
 }
 
-async function setupPostList() {
-    const client = await getClient();
+async function setupPostList(client) {
     client.watchQuery({
         query: GET_ALL_POSTS
-    }).subscribe(newValue => updatePostList(newValue));
+    }).subscribe(result => {
+        const posts = result.data.allPosts;
+        const postList = document.getElementById('post-list');
 
-    const posts = result.data.allPosts;
-    const postList = document.getElementById('post-list');
+        const postsHTML = posts.map(post =>
+            `<mwc-list-item id="${post.id}">${post.id}</mwc-list-item>`);
 
-    const postsHTML = posts.map(post =>
-        `<mwc-list-item id="${post.id}">${post.id}</mwc-list-item>`);
+        postList.innerHTML = `<mwc-list>${postsHTML}</mwc-list>`;
 
-    postList.innerHTML = `<mwc-list>${postsHTML}</mwc-list>`;
-
-    for (const post of posts) {
-        document.getElementById(post).onclick = () =>
-            setPostDetail(post)
-    }
+        for (const post of posts) {
+            document.getElementById(post.id).onclick = () =>
+                setPostDetail(client, post.id)
+        }
+    });
 }
 
-async function setupCreatePost() {
-    const client = await getClient();
-
+async function setupCreatePost(client) {
     const button = document.getElementById('create-post');
     const postContent = document.getElementById('post-content');
     button.onclick = () => {
@@ -42,17 +44,17 @@ async function setupCreatePost() {
                 content: postContent.value
             },
             update: (cache, result) => {
-                const { allPosts } = cache.readQuery({ query: GET_ALL_POSTS });
+                const query = cache.readQuery({ query: GET_ALL_POSTS });
                 cache.writeQuery({
                     query: GET_ALL_POSTS,
-                    data: { allPosts: allPosts.concat([result.data.createPost]) },
+                    data: { allPosts: query.allPosts.concat([result.data.createPost]) },
                 });
             }
         })
     }
 }
 
-async function setPostDetail(postId) {
+async function setPostDetail(client, postId) {
     const postDetail = document.getElementById('post-detail');
 
     if (!postId) {
@@ -60,20 +62,20 @@ async function setPostDetail(postId) {
         return;
     }
 
-    const client = await getClient();
-
     const result = await client.query({
         query: GET_POST_DETAIL,
         variables: {
             postId
         }
     })
-    const post = result.data;
+    const post = result.data.post;
 
     postDetail.innerHTML =
-        `<mwc-card>
-            <span>${post.content}</span>
-            <span>Written by ${post.author.id} on ${post.timestamp.toLocaleString()}</span>
+        `<mwc-card style="width: auto; ">
+            <div style="padding: 16px;" class="column">
+                <span style="margin-bottom: 10px;">${post.content}</span>
+                <span style="opacity: 0.6">Written by ${post.author.id} <br> on ${new Date(post.timestamp).toUTCString()}</span>
+            </div>
         </mwc-card>`
 }
 

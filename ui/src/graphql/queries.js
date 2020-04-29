@@ -8,8 +8,8 @@ export const GET_ALL_POSTS = gql`
   }
 `
 export const GET_POST_DETAIL = gql` 
-  query GetPostDetail(postId: ID!) {
-    post(id: "${postId}") {
+  query GetPostDetail($postId: ID!) {
+    post(id: $postId) {
       id
       content
       timestamp
