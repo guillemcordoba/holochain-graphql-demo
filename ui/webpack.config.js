@@ -18,9 +18,6 @@ module.exports = {
   plugins: [
     ...config.plugins,
     new webpack.EnvironmentPlugin({
-      WS_INTERFACE: process.env.WS_INTERFACE,
-      PRODUCTION: process.env.PRODUCTION,
-      USERNAME: process.env.USERNAME
     })
   ]
 };

@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Post {
     id: ID!
     content: String!
+    timestamp: Int!
     author: Author!
   }
 
@@ -14,10 +15,11 @@ export const typeDefs = gql`
 
   type Query {
     allPosts: [Post!]!
+    post(id: ID!): Post!
   }
 
   type Mutation {
-    createPost(content: String!): ID!
+    createPost(content: String!): Post!
   }
 `;
 
