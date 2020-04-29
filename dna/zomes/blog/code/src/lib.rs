@@ -10,12 +10,16 @@ use holochain_anchors::anchor;
 #[derive(Serialize, Deserialize, Debug, DefaultJson, Clone)]
 pub struct Post {
     content: String,
+    author_address: Address,
+    timestamp: u64,
 }
 
 impl Post {
-    pub fn new(content: String) -> Self {
+    pub fn new(content: String, author_address: Address, timestamp: u64) -> Self {
         Post {
             content,
+            author_address,
+            timestamp,
         }
     }
     pub fn entry(self) -> Entry {
@@ -79,8 +83,8 @@ mod courses {
     }
 
     #[zome_fn("hc_public")]
-    fn create_post(content: String) -> ZomeApiResult<Address> {
-        let new_post_entry = Post::new(content).entry();
+    fn create_post(content: String, timestamp: u64) -> ZomeApiResult<Address> {
+        let new_post_entry = Post::new(content, AGENT_ADDRESS.to_string().into(), timestamp).entry();
         let new_post_address = hdk::commit_entry(&new_post_entry)?;
         let anchor_address = anchor("post_anchor".into(), "posts".into())?;
         hdk::link_entries(&anchor_address, &new_post_address, "anchor->posts", "")?;

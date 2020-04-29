@@ -36,9 +36,9 @@ orchestrator.registerScenario("create_post and get_all_posts", async (s, t) => {
 
   // Make a call to a Zome function
   // indicating the function, and passing it an input
-  const create_post_1 = await alice.call("blog_dna", "blog", "create_post", {"content" : "test"})
-  const create_post_2 = await alice.call("blog_dna", "blog", "create_post", {"content" : "test2"})
-  const create_post_3 = await bob.call("blog_dna", "blog", "create_post", {"content" : "test3"})
+  const create_post_1 = await alice.call("blog_dna", "blog", "create_post", {"content" : "test", "timestamp": 12345})
+  const create_post_2 = await alice.call("blog_dna", "blog", "create_post", {"content" : "test2", "timestamp": 222})
+  const create_post_3 = await bob.call("blog_dna", "blog", "create_post", {"content" : "test3", "timestamp": 3232})
 
   // Wait for all network activity to settle
   await s.consistency()
