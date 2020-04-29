@@ -96,6 +96,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "blog"
+version = "0.1.0"
+dependencies = [
+ "hdk",
+ "hdk_proc_macros",
+ "holochain_anchors",
+ "holochain_json_derive",
+ "holochain_wasm_utils",
+ "serde",
+ "serde_derive",
+ "serde_json",
+]
+
+[[package]]
 name = "byte-tools"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -146,20 +160,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e9a455e156a4271e12fd0246238c380b1e223e3736663c7a18ed8b6362028a9"
 dependencies = [
  "lazy_static",
-]
-
-[[package]]
-name = "courses"
-version = "0.1.0"
-dependencies = [
- "hdk",
- "hdk_proc_macros",
- "holochain_anchors",
- "holochain_json_derive 0.0.30",
- "holochain_wasm_utils",
- "serde",
- "serde_derive",
- "serde_json",
 ]
 
 [[package]]
@@ -446,7 +446,7 @@ dependencies = [
  "env_logger",
  "holochain_core_types",
  "holochain_json_api",
- "holochain_json_derive 0.0.23",
+ "holochain_json_derive",
  "holochain_persistence_api",
  "holochain_wasm_utils",
  "lazy_static",
@@ -484,7 +484,7 @@ version = "0.2.5"
 source = "git+https://github.com/holochain/holochain_anchors#4aa2fe1fe1b2ada376037a0e814ef165383fcd42"
 dependencies = [
  "hdk",
- "holochain_json_derive 0.0.23",
+ "holochain_json_derive",
  "serde",
  "serde_derive",
  "serde_json",
@@ -504,7 +504,7 @@ dependencies = [
  "futures",
  "hcid",
  "holochain_json_api",
- "holochain_json_derive 0.0.23",
+ "holochain_json_derive",
  "holochain_locksmith",
  "holochain_logging",
  "holochain_persistence_api",
@@ -543,7 +543,7 @@ dependencies = [
  "futures-sink-preview",
  "futures-util-preview",
  "hcid",
- "holochain_json_derive 0.0.23",
+ "holochain_json_derive",
  "multihash",
  "objekt",
  "serde",
@@ -558,18 +558,6 @@ name = "holochain_json_derive"
 version = "0.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6d411807a76c2a2f45bee166d576e65eee2659be61a62f10008e94313be1b537"
-dependencies = [
- "quote 0.6.11",
- "serde",
- "serde_json",
- "syn 0.15.31",
-]
-
-[[package]]
-name = "holochain_json_derive"
-version = "0.0.30"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b5398db53eb5236286b8538b74135cd02f9b4ea6b83c3b037f887b953139b39"
 dependencies = [
  "quote 0.6.11",
  "serde",
@@ -626,7 +614,7 @@ dependencies = [
  "futures-util-preview",
  "hcid",
  "holochain_json_api",
- "holochain_json_derive 0.0.23",
+ "holochain_json_derive",
  "lazy_static",
  "multihash",
  "objekt",
@@ -648,7 +636,7 @@ checksum = "f9e84c9faea1eecd4fa56fd4837e7199a19a716286baa28eee4751cd3468a448"
 dependencies = [
  "holochain_core_types",
  "holochain_json_api",
- "holochain_json_derive 0.0.23",
+ "holochain_json_derive",
  "holochain_persistence_api",
  "serde",
  "serde_derive",

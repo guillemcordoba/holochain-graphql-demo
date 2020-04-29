@@ -94,25 +94,23 @@ mod courses {
     }
 
     #[zome_fn("hc_public")]
-    fn get_all_posts() -> ZomeApiResult<Vec<Post>> {
-        hdk::get_links(
+    fn get_all_posts() -> ZomeApiResult<Vec<Address>> {
+        let addresses = hdk::get_links(
             &anchor("post_anchor".into(), "posts".into())?, 
             LinkMatch::Exactly("anchor->posts"),
             LinkMatch::Any
-        )?.addresses().into_iter().map(|post_address| {
-            hdk::utils::get_as_type(post_address)
-        }).collect()
+        )?.addresses();
+        Ok(addresses)
     }
 
     #[zome_fn("hc_public")]
-    fn get_author_posts(agent_id: Address) -> ZomeApiResult<Vec<Post>> {
-        hdk::get_links(
+    fn get_author_posts(agent_id: Address) -> ZomeApiResult<Vec<Address>> {
+        let addresses = hdk::get_links(
             &agent_id, 
             LinkMatch::Exactly("author->posts"),
             LinkMatch::Any
-        )?.addresses().into_iter().map(|post_address| {
-            hdk::utils::get_as_type(post_address)
-        }).collect()
+        )?.addresses();
+        Ok(addresses)
     }
 
     #[zome_fn("hc_public")]
