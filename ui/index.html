@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta name="Description" content="Put your description here." />
-    <base href="/" />
 
-    <style>
-      html,
-      body {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-        background-color: #ededed;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="Description" content="Put your description here." />
+  <base href="/" />
 
-      :root {
-        --mdc-theme-primary: #673ab7;
-        --mdc-theme-secondary: #4CAF50;
-      }
-    </style>
-    <title>leap-courses</title>
-  </head>
-  <body>
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #ededed;
+    }
 
-    <script type="module" src="./src/index.js"></script>
-  </body>
+    :root {
+      --mdc-theme-primary: #673ab7;
+      --mdc-theme-secondary: #4CAF50;
+    }
+  </style>
+  <title>leap-courses</title>
+</head>
+
+<body>
+
+  <div>
+    <h3>Create post</h3>
+    <mwc-textarea id="post-content"></mwc-textarea>
+
+    <mwc-button icon="add" label="CREATE POST" id="create-post"></mwc-button>
+  </div>
+
+  <div id="post-list"></div>
+
+
+  <script type="module" src="./src/index.js"></script>
+</body>
+
 </html>

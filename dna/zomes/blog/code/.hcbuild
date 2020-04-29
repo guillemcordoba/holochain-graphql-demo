@@ -15,32 +15,32 @@
     },
     {
       "command": "CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/my_first_app/target} && wasm-gc",
-      "arguments": ["$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/courses.wasm"]
+      "arguments": ["$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/blog.wasm"]
     },
     {
       "command": "CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/my_first_app/target} && wasm-opt",
       "arguments": [
         "-Oz",
         "--vacuum",
-        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/courses.wasm"
+        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/blog.wasm"
       ]
     },
     {
       "command": "CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/my_first_app/target} && wasm2wat",
       "arguments": [
-        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/courses.wasm",
+        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/blog.wasm",
         "-o",
-        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/courses.wat"
+        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/blog.wat"
       ]
     },
     {
       "command": "CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/tmp/my_first_app/target} && wat2wasm",
       "arguments": [
-        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/courses.wat",
+        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/blog.wat",
         "-o",
-        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/courses.wasm"
+        "$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/blog.wasm"
       ]
     }
   ],
-  "artifact": "${CARGO_TARGET_DIR:-/tmp/my_first_app/target}/wasm32-unknown-unknown/release/courses.wasm"
+  "artifact": "${CARGO_TARGET_DIR:-/tmp/my_first_app/target}/wasm32-unknown-unknown/release/blog.wasm"
 }

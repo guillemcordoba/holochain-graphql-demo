@@ -6,20 +6,29 @@ import { resolvers } from './resolvers';
 import { typeDefs } from './schema';
 import { getConnection } from '../connection';
 
-let client = undefined;
-
-export async function getClient() {
-  if (client) return client;
-
+export async function createSchemaLink() {
+  // Get the callZome connection
   const connection = await getConnection();
 
+  // Create an executable schema from the schema and resolvers
   const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
   });
 
-  const link = new SchemaLink({ schema, context: { callZome: connection } });
+  // Return a final link with our executable schema and the callZome inside the context
+  return new SchemaLink({ schema, context: { callZome: connection } });
+}
 
+let client = undefined;
+
+export async function getClient() {
+  if (client) return client;
+
+  // Create our schema link
+  const link = await createSchemaLink();
+
+  // Initialize the apollo client
   client = new ApolloClient({
     cache: new InMemoryCache(),
     connectToDevTools: true,

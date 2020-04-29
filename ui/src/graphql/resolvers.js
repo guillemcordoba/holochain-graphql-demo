@@ -19,13 +19,12 @@ export const resolvers = {
   Author: {
     async posts(parent, args, { callZome }) {
       // Get the list of post addresses 
-      const result = await callZome(
+      const postAddresses = await callZome(
         INSTANCE_NAME,
         ZOME_NAME,
         'get_author_posts'
       )({ agent_id: parent });
 
-      const postAddresses = result.Ok;
       // Parallely iterate through the list of addresses to call `get_post` for each address
       const promises = postAddresses.map(async address => getPost(callZome, address));
       return Promise.all(promises);
@@ -45,13 +44,12 @@ export const resolvers = {
       // Get the callZome function from the context
       const callZome = context.callZome;
       // Get all posts addresses
-      const result = await callZome(
+      const postAddresses = await callZome(
         INSTANCE_NAME,
         ZOME_NAME,
         'get_all_posts'
       )({});
 
-      const postAddresses = result.Ok;
       // Parallely iterate through the list of addresses to call `get_post` for each address
       const promises = postAddresses.map(async address => getPost(callZome, address));
       return Promise.all(promises);

@@ -4,9 +4,9 @@
 // in Holochain apps installed in a conductor.
 // More info: https://github.com/holochain/hc-web-client
 import { connect } from '@holochain/hc-web-client';
-import { HOST_URL } from './config';
 
 let connection = undefined;
+const HOST_URL = 'ws://localhost:8888';
 
 export async function getConnection() {
   // return connection if already established
@@ -30,7 +30,14 @@ export async function getConnection() {
       result
     );
 
-    return result;
+    const parsed = JSON.parse(result);
+
+    if (result.Err) throw new Error(JSON.stringify(result.Err));
+    if (result.SerializationError) {
+      throw new Error(JSON.stringify(result.SerializationError));
+    }
+
+    return parsed.Ok !== undefined ? parsed.Ok : parsed
   };
 
   return connection;
