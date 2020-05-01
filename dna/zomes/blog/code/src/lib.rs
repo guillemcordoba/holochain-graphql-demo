@@ -28,7 +28,7 @@ impl Post {
 }
 
 #[zome]
-mod courses {
+mod blog {
 
     #[init]
     fn init() {
